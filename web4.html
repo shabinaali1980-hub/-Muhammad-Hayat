@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlimited Science Quest</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --accent-blue: #00d2ff;
+            --accent-pink: #ff007f;
+            --button-bg: #1f2937;
+            --button-hover: #374151;
+            --correct-green: #10b981;
+            --wrong-red: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .author-tag {
+            color: var(--accent-pink);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .quest-container {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 550px;
+            padding: 40px 30px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            color: var(--accent-blue);
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .level-select {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .level-btn {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .level-btn:hover {
+            border-color: var(--accent-blue);
+            transform: scale(1.02);
+        }
+
+        .question-screen {
+            display: none;
+        }
+
+        .level-indicator {
+            color: var(--text-muted);
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            text-align: center;
+            min-height: 70px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background-color: var(--button-bg);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        .option-btn.correct {
+            background-color: var(--correct-green) !important;
+            border-color: var(--correct-green);
+        }
+
+        .option-btn.wrong {
+            background-color: var(--wrong-red) !important;
+            border-color: var(--wrong-red);
+        }
+
+        .next-btn {
+            background-color: var(--accent-blue);
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .quit-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .quit-link:hover {
+            color: var(--text-main);
+        }
+
+        .points {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .points span {
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="author-tag">By Muhammad Hayat Rajput</div>
+
+    <div class="quest-container">
+        <!-- SCREEN 1: START / GRADE SELECTION -->
+        <div id="start-screen">
+            <div class="header">
+                <h1 class="title">🚀 Science Quest</h1>
+                <p style="color: var(--text-muted)">Select your Quest Grade Level to begin:</p>
+            </div>
+            <div class="level-select">
+                <button class="level-btn" onclick="startQuest('Elementary (Grades 3-5)')">🌱 Elementary (Grades 3-5)</button>
+                <button class="level-btn" onclick="startQuest('Middle School (Grades 6-8)')">🚀 Middle School (Grades 6-8)</button>
+                <button class="level-btn" onclick="startQuest('High School (Grades 9+)')">🌌 High School (Grades 9+)</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: ACTIVE INTERACTIVE QUIZ -->
+        <div id="quiz-screen" class="question-screen">
+            <div class="level-indicator" id="grade-title">Level: Loading...</div>
+            <div class="question" id="question-text">Question loading...</div>
+
+            <div class="options-list" id="options-container">
+                <!-- Dynamically generated options will go here -->
+            </div>
+
+            <button class="next-btn" id="next-button" onclick="nextQuestion()">Next Question →</button>
+
+            <div class="footer-row">
+                <span class="quit-link" onclick="resetQuest()">← Change Level</span>
+                <div class="points">Points: <span id="score-count">0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Transferred from your Python dictionary structure directly into JavaScript!
+        const GRADE_DATA = {
+            "Elementary (Grades 3-5)": {
+                "planets": {
+                    "Mercury": {"trait": "closest planet to the Sun", "feature": "the fastest orbit around the Sun"},
+                    "Venus": {"trait": "hottest planet in our solar system", "feature": "brightest planet in our night sky"},
+                    "Earth": {"trait": "only planet known to support life", "feature": "planet covered mostly by liquid water"},
+                    "Mars": {"trait": "known as the Red Planet", "feature": "home to Olympus Mons, the largest volcano in the solar system"},
+                    "Jupiter": {"trait": "largest planet in our solar system", "feature": "giant planet known for its Great Red Spot"},
+                    "Saturn": {"trait": "famous for its beautiful, bright rings", "feature": "second-largest gas giant with stunning ring systems"},
+                    "Uranus": {"trait": "ice giant that rotates completely on its side", "feature": "pale blue planet that spins like a rolling ball"},
+                    "Neptune": {"trait": "farthest planet from the Sun", "feature": "beautiful deep-blue planet named after the Roman god of the sea"}
+                },
+                "templates": [
+                    "Which planet is known as the {trait}?",
+                    "If you are looking for the {feature}, which planet should you visit?"
+                ]
+            },
+            "Middle School (Grades 6-8)": {
+                "planets": {
+                    "Mercury": {"atmosphere": "almost no atmosphere (exosphere)", "moons": "0 moons"},
+                    "Venus": {"atmosphere": "a thick, toxic greenhouse atmosphere of carbon dioxide", "moons": "0 moons"},
+                    "Earth": {"atmosphere": "a nitrogen-oxygen rich atmosphere that protects life", "moons": "1 moon named Luna"},
+                    "Mars": {"atmosphere": "a thin atmosphere mostly made of carbon dioxide and covered in iron oxide dust", "moons": "2 small moons named Phobos and Deimos"},
+                    "Jupiter": {"atmosphere": "a massive hydrogen and helium atmosphere with storm bands", "moons": "95 official moons, including Ganymede"},
+                    "Saturn": {"atmosphere": "a gas atmosphere made of hydrogen and helium with ultra-low density", "moons": "146 moons, including the massive Titan"},
+                    "Uranus": {"atmosphere": "an atmosphere containing hydrogen, helium, and methane ice giving it an aquamarine color", "moons": "27 moons named after Shakespearean characters"},
+                    "Neptune": {"atmosphere": "the windiest atmosphere in the solar system, with supersonic methane winds", "moons": "16 moons, including the backwards-orbiting Triton"}
+                },
+                "templates": [
+                    "Which celestial body is characterized by having {atmosphere}?",
+                    "Which planet matches the following description: it has exactly {moons}?"
+                ]
+            },
+            "High School (Grades 9+)": {
+                "planets": {
+                    "Mercury": {"science": "has a massive iron core generating a magnetic field despite its slow rotation", "fact": "experiences extreme temperature swings ranging from -180°C to 430°C"},
+                    "Venus": {"science": "experiences an intense runaway greenhouse effect causing surface pressures 90 times greater than Earth's", "fact": "is the only planet in the solar system that exhibits retrograded (clockwise) rotation"},
+                    "Earth": {"science": "possesses a powerful magnetosphere generated by a liquid iron outer core geodynamo", "fact": "has an active plate tectonics system that constantly recycles its crust"},
+                    "Mars": {"science": "displays heavy crustal magnetization and is home to the Valles Marineris canyon system", "fact": "has a surface highly oxidized by iron grains, creating its distinct spectral rust signature"},
+                    "Jupiter": {"science": "radiates more thermal energy into space than it receives from the Sun due to Kelvin-Helmholtz contraction", "fact": "possesses a dynamic magnetosphere that would appear larger than the moon in our night sky if visible"},
+                    "Saturn": {"science": "has a mean density lower than liquid water (0.69 g/cm³)", "fact": "features a persistent, unexplained hexagonal jet stream wave pattern at its north pole"},
+                    "Uranus": {"science": "has a unique magnetosphere tilted 60 degrees off its rotational axis and offset from its core", "fact": "has an axial tilt of 98 degrees, likely caused by a massive ancient protoplanetary collision"},
+                    "Neptune": {"science": "has an internal heat source generating winds that surpass the local speed of sound", "fact": "was the first planet discovered entirely via mathematical prediction rather than direct visual observation"}
+                },
+                "templates": [
+                    "From an astrophysical standpoint, which planet {science}?",
+                    "Which planetary body matches this advanced astronomical profile: It {fact}?"
+                ]
+            }
+        };
+
+        let currentGrade = "";
+        let score = 0;
+        let currentCorrectAnswer = "";
+
+        function startQuest(grade) {
+            currentGrade = grade;
+            score = 0;
+            document.getElementById('score-count').textContent = score;
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            document.getElementById('grade-title').textContent = `Quest Level: ${grade}`;
+            nextQuestion();
+        }
+
+        function resetQuest() {
+            document.getElementById('start-screen').style.display = 'block';
+            document.getElementById('quiz-screen').style.display = 'none';
+        }
+
+        function nextQuestion() {
+            document.getElementById('next-button').style.display = 'none';
+            const levelData = GRADE_DATA[currentGrade];
+            const allPlanets = Object.keys(levelData.planets);
+
+            // Randomly select correct planet
+            currentCorrectAnswer = allPlanets[Math.floor(Math.random() * allPlanets.length)];
+
+            // Pick a template question pattern
+            const template = levelData.templates[Math.floor(Math.random() * levelData.templates.length)];
+
+            // Find the template variable tag (e.g. {trait}, {science})
+            const match = template.match(/\{([^}]+)\}/);
+            const key = match[1];
+
+            const attributeValue = levelData.planets[currentCorrectAnswer][key];
+            const questionText = template.replace(`{${key}}`, attributeValue);
+
+            document.getElementById('question-text').textContent = questionText;
+
+            // Generate distractors (wrong answers) like the python random.sample logic
+            const wrongPlanets = allPlanets.filter(p => p !== currentCorrectAnswer);
+            const shuffledWrong = wrongPlanets.sort(() => 0.5 - Math.random());
+            const options = [currentCorrectAnswer, shuffledWrong[0], shuffledWrong[1], shuffledWrong[2]];
+
+            // Final shuffle of choices A, B, C, D
+            options.sort(() => 0.5 - Math.random());
+
+            // Render options to UI
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => handleAnswer(btn, option);
+                container.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(selectedBtn, selectedOption) {
+            const buttons = document.querySelectorAll('.option-btn');
+            // Disable all options immediately once an answer is chosen
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (selectedOption === currentCorrectAnswer) {
+                selectedBtn.classList.add('correct');
+                score += 10;
+                document.getElementById('score-count').textContent = score;
+            } else {
+                selectedBtn.classList.add('wrong');
+                // Highlight the correct option
+                buttons.forEach(btn => {
+                    if (btn.textContent === currentCorrectAnswer) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            document.getElementById('next-button').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game</title>
+    <style>
+        body {
+            background-color: #1a3038;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .game-container {
+            background-color: #24424d;
+            border-radius: 20px;
+            padding: 30px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            color: #ffffff;
+        }
+        .author {
+            color: #40a0ff;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        h1 {
+            font-size: 32px;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        .mode-select, .level-badge {
+            background-color: rgba(0, 172, 230, 0.2);
+            border: 1px solid #00ace6;
+            color: #00ace6;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            outline: none;
+            cursor: pointer;
+        }
+        .mode-select option {
+            background-color: #24424d;
+            color: #fff;
+        }
+        .riddle-text {
+            font-size: 18px;
+            margin: 30px 0;
+            line-height: 1.5;
+        }
+        .input-box {
+            width: 90%;
+            padding: 12px;
+            border: 1px solid #345c6b;
+            border-radius: 8px;
+            background-color: #1c353f;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+        .submit-btn {
+            width: 97%;
+            padding: 14px;
+            background-color: #00d2ff;
+            border: none;
+            border-radius: 10px;
+            color: #1a3038;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);
+            transition: background 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #00b5dc;
+        }
+        .score {
+            color: #2ce689;
+            font-weight: bold;
+            margin-top: 25px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div class="author">Made by Muhammed Hayat Rajput</div>
+    <h1>Guess the Logic!</h1>
+
+    <!-- Mode Selection Option Added Here -->
+    <select id="difficultyMode" class="mode-select" onchange="changeMode()">
+        <option value="easy">Level: Easy (1/3)</option>
+        <option value="medium">Level: Medium (1/3)</option>
+        <option value="hard">Level: Hard (1/3)</option>
+    </select>
+
+    <div class="riddle-text" id="riddleDisplay">What has many teeth, but cannot bite?</div>
+
+    <input type="text" id="userAnswer" class="input-box" placeholder="Type your answer here..." autocomplete="off">
+    <button class="submit-btn" onclick="checkAnswer()">Submit Answer</button>
+
+    <div class="score">CURRENT SCORE: <span id="scoreDisplay">0</span></div>
+</div>
+
+<script>
+    // Frontend JS logic mapping modes to questions
+    const riddles = {
+        easy: { question: "What has many teeth, but cannot bite?", answer: "comb" },
+        medium: { question: "The more of them you take, the more you leave behind. What are they?", answer: "footsteps" },
+        hard: { question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "echo" }
+    };
+
+    let currentMode = 'easy';
+    let score = 0;
+
+    function changeMode() {
+        const select = document.getElementById('difficultyMode');
+        currentMode = select.value;
+        document.getElementById('riddleDisplay').innerText = riddles[currentMode].question;
+        document.getElementById('userAnswer').value = '';
+    }
+
+    function checkAnswer() {
+        const input = document.getElementById('userAnswer').value.trim().toLowerCase();
+        const correctAnswer = riddles[currentMode].answer;
+
+        if (input === correctAnswer) {
+            alert("Correct Logic!");
+            score += 10;
+            document.getElementById('scoreDisplay').innerText = score;
+        } else {
+            alert("Incorrect! Try again.");
+        }
+    }
+</script>
+
+</body>
+</html>

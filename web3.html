@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Quest: Ultimate Learning Adventure</title>
+    <style>
+        :root {
+            --bg-color: #1a233a;
+            --card-color: #243150;
+            --btn-color: #2d3d65;
+            --btn-hover: #3b4f82;
+            --accent-color: #4da3ff;
+            --text-color: #ffffff;
+            --text-secondary: #a0aec0;
+            --success-color: #2ecc71;
+            --wrong-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-color);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .author {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 42px;
+            color: var(--accent-color);
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 10px rgba(77, 163, 255, 0.3);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* Level Grid Screen */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .level-btn {
+            background-color: var(--btn-color);
+            color: var(--text-color);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 25px 0;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .level-btn:hover {
+            background-color: var(--btn-hover);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Quest / Question Screen */
+        .hidden {
+            display: none !important;
+        }
+
+        .quest-box {
+            text-align: left;
+        }
+
+        .quest-header {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            min-height: 60px;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background-color: var(--btn-color);
+            color: var(--text-color);
+            border: 2px solid transparent;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .control-btn {
+            background-color: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .control-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            height: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="author">MADE BY MUHAMMAD HAYAT RAJPUT</div>
+
+        <!-- SCREEN 1: LEVEL SELECTOR -->
+        <div id="level-screen">
+            <h1>English Quest</h1>
+            <div class="subtitle">Master vocabulary, grammar & syntax</div>
+            <p style="margin-bottom: 20px; color: var(--text-secondary);">Select an expedition level to begin:</p>
+
+            <div class="grid">
+                <button class="level-btn" onclick="startQuest(1)">1</button>
+                <button class="level-btn" onclick="startQuest(2)">2</button>
+                <button class="level-btn" onclick="startQuest(3)">3</button>
+                <button class="level-btn" onclick="startQuest(4)">4</button>
+                <button class="level-btn" onclick="startQuest(5)">5</button>
+                <button class="level-btn" onclick="startQuest(6)">6</button>
+                <button class="level-btn" onclick="startQuest(7)">7</button>
+                <button class="level-btn" onclick="startQuest(8)">8</button>
+                <button class="level-btn" onclick="startQuest(9)">9</button>
+                <button class="level-btn" onclick="startQuest(10)">10</button>
+                <button class="level-btn" onclick="startQuest(11)">11</button>
+                <button class="level-btn" onclick="startQuest(12)">12</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: INFINITE GENERATOR INTERACTIVE INTERFACE -->
+        <div id="quest-screen" class="quest-box hidden">
+            <div class="quest-header">
+                <span id="level-indicator">Level: 1</span>
+                <span id="score-indicator">Score: 0</span>
+            </div>
+
+            <div class="question-text" id="question-field">Loading quest...</div>
+
+            <div class="options-grid" id="options-field">
+                <!-- Options injected dynamically -->
+            </div>
+
+            <div class="feedback" id="feedback-field"></div>
+
+            <div class="controls">
+                <button class="control-btn" onclick="goBack()">← Back</button>
+                <button class="control-btn" style="background-color: var(--accent-color); color: #000; border: none; font-weight: bold;" onclick="generateQuestion()">Next Quest →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 1;
+        let currentScore = 0;
+        let currentCorrectAnswer = "";
+
+        // Words bank for procedural generation
+        const vocabulary = {
+            nouns: ["astronaut", "fortress", "discovery", "philosopher", "ecosystem", "avalanche", "horizon", "paradox"],
+            verbs: ["accelerates", "illuminates", "demolishes", "navigates", "flourishes", "contradicts"],
+            adjectives: ["magnificent", "hazardous", "benevolent", "conspicuous", "gargantuan", "ephemeral"],
+            synonyms: [
+                {w: "Happy", choices: ["Joyful", "Melancholy", "Anxious", "Morose"], ans: "Joyful"},
+                {w: "Ancient", choices: ["Antique", "Modern", "Trendy", "Current"], ans: "Antique"},
+                {w: "Courageous", choices: ["Brave", "Timid", "Fearful", "Weak"], ans: "Brave"},
+                {w: "Vast", choices: ["Huge", "Tiny", "Narrow", "Limited"], ans: "Huge"}
+            ]
+        };
+
+        function startQuest(level) {
+            currentLevel = level;
+            document.getElementById("level-screen").classList.add("hidden");
+            document.getElementById("quest-screen").classList.remove("hidden");
+            document.getElementById("level-indicator").innerText = `Level: ${level}`;
+            generateQuestion();
+        }
+
+        function goBack() {
+            document.getElementById("quest-screen").classList.add("hidden");
+            document.getElementById("level-screen").classList.remove("hidden");
+            document.getElementById("feedback-field").innerText = "";
+        }
+
+        // UNLIMITED QUESTION GENERATOR ENGINE
+        function generateQuestion() {
+            document.getElementById("feedback-field").innerText = "";
+            const qField = document.getElementById("question-field");
+            const oField = document.getElementById("options-field");
+            oField.innerHTML = "";
+
+            let qData = {};
+
+            // Algorithmic rules variant according to difficulty levels (1-12)
+            if (currentLevel === 1) {
+                // Level 1: Simple Math / Count representation rules
+                let num1 = Math.floor(Math.random() * 10) + 1;
+                let num2 = Math.floor(Math.random() * 10) + 1;
+                qData.question = `Complete the plural structure: If you have ${num1} apple and get ${num2} more, you have ${num1 + num2} ______.`;
+                qData.options = ["apple", "apples", "apples'"];
+                qData.answer = "apples";
+
+            } else if (currentLevel === 2) {
+                // Level 2: Basic Synonyms
+                let item = vocabulary.synonyms[Math.floor(Math.random() * vocabulary.synonyms.length)];
+                qData.question = `What is a structural synonym for the word: "${item.w}"?`;
+                qData.options = [...item.choices].sort(() => Math.random() - 0.5);
+                qData.answer = item.ans;
+
+            } else if (currentLevel === 3) {
+                // Level 3: Subject-Verb Agreement Setup
+                let subjects = [
+                    {s: "The pack of wolves", v: "runs", wrong: "run"},
+                    {s: "Every one of the students", v: "is", wrong: "are"},
+                    {s: "The players together with the coach", v: "have", wrong: "has"}
+                ];
+                let item = subjects[Math.floor(Math.random() * subjects.length)];
+                qData.question = `Choose the correct verb: "${item.s} ______ arriving shortly."`;
+                qData.options = [item.v, item.wrong].sort(() => Math.random() - 0.5);
+                qData.answer = item.v;
+
+            } else if (currentLevel >= 4 && currentLevel <= 7) {
+                // Mid Tiers: Randomized sentence structure checks
+                let n = vocabulary.nouns[Math.floor(Math.random() * vocabulary.nouns.length)];
+                let v = vocabulary.verbs[Math.floor(Math.random() * vocabulary.verbs.length)];
+                qData.question = `Identify the structural part of speech for "**${v}**" in: "The ${n} ${v} beautifully under pressure."`;
+                qData.options = ["Noun", "Verb", "Adjective", "Adverb"];
+                qData.answer = "Verb";
+
+            } else {
+                // Tiers 8 to 12: High-tier advanced dynamic puzzles
+                let adj = vocabulary.adjectives[Math.floor(Math.random() * vocabulary.adjectives.length)];
+                qData.question = `Context Clues: "His context was described as highly **${adj}**." What form does this variable imply?`;
+                qData.options = ["A state of action", "A descriptive attribute", "A subjective time frame", "An object property"];
+                qData.answer = "A descriptive attribute";
+            }
+
+            // Render details out
+            qField.innerText = qData.question;
+            currentCorrectAnswer = qData.answer;
+
+            qData.options.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerText = opt;
+                btn.onclick = function() { checkAnswer(this, opt); };
+                oField.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(element, selected) {
+            const feedback = document.getElementById("feedback-field");
+
+            // Highlight step
+            if(selected === currentCorrectAnswer) {
+                feedback.innerText = "✨ Correct! Awesome job.";
+                feedback.style.color = "var(--success-color)";
+                currentScore += 10;
+                document.getElementById("score-indicator").innerText = `Score: ${currentScore}`;
+            } else {
+                feedback.innerText = `❌ Incorrect. Correct answer was: ${currentCorrectAnswer}`;
+                feedback.style.color = "var(--wrong-color)";
+            }
+
+            // Disable all buttons after choice
+            const buttons = document.getElementsByClassName("option-btn");
+            for(let i=0; i<buttons.length; i++) {
+                buttons[i].disabled = true;
+                if(buttons[i].innerText === currentCorrectAnswer) {
+                    buttons[i].style.borderColor = "var(--success-color)";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
